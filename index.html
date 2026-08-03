@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lars Medical Center — Advanced Care. Human Touch.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root {
+  --navy: #0A2E5C;
+  --navy-light: #0d3a73;
+  --teal: #00B4A6;
+  --teal-light: #00d4c4;
+  --white: #FFFFFF;
+  --off-white: #F7F9FC;
+  --charcoal: #2D2D2D;
+  --gray: #6B7280;
+  --light-gray: #E8EDF4;
+  --red-emergency: #E63946;
+  --gold: #F4A261;
+  --shadow-sm: 0 2px 8px rgba(10,46,92,0.08);
+  --shadow-md: 0 8px 32px rgba(10,46,92,0.12);
+  --shadow-lg: 0 20px 60px rgba(10,46,92,0.18);
+  --radius: 16px;
+  --radius-sm: 8px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--charcoal);
+  background: var(--white);
+  overflow-x: hidden;
+}
+
+/* ─── LOADING SCREEN ─── */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--navy);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#loader.hidden { opacity:0; visibility:hidden; }
+.loader-logo {
+  font-family: 'Playfair Display', serif;
+  color: var(--white);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+.loader-logo span { color: var(--teal); }
+.loader-bar {
+  width: 200px; height: 3px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.loader-bar-fill {
+  height: 100%;
+  background: var(--teal);
+  border-radius: 99px;
+  animation: loadFill 1.8s ease forwards;
+}
+@keyframes loadFill { from{width:0} to{width:100%} }
+
+/* ─── EMERGENCY BANNER ─── */
+.emergency-banner {
+  background: var(--red-emergency);
+  color: var(--white);
+  text-align: center;
+  padding: 9px 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  position: relative;
+  z-index: 100;
+}
+.emergency-banner a { color: var(--white); text-decoration: underline; }
+
+/* ─── TOP BAR ─── */
+.top-bar {
+  background: var(--navy);
+  color: rgba(255,255,255,0.75);
+  font-size: 0.8rem;
+  padding: 8px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-bar a { color: rgba(255,255,255,0.75); text-decoration: none; }
+.top-bar a:hover { color: var(--teal); }
+.top-bar-left, .top-bar-right { display: flex; gap: 24px; align-items: center; }
+.top-bar i { margin-right: 5px; color: var(--teal); }
+
+/* ─── HEADER / NAV ─── */
+header {
+  position: sticky; top: 0; z-index: 500;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s;
+}
+header.scrolled { box-shadow: var(--shadow-md); }
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 72px;
+}
+
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none;
+}
+.logo-icon {
+  width: 42px; height: 42px;
+  background: var(--navy);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal);
+  font-size: 1.2rem;
+}
+.logo-text { font-family: 'Playfair Display', serif; }
+.logo-name { display:block; font-size: 1.1rem; font-weight: 700; color: var(--navy); line-height:1.1; }
+.logo-tag { display:block; font-size: 0.65rem; color: var(--teal); font-family:'DM Sans',sans-serif; letter-spacing:1.5px; text-transform:uppercase; }
+
+.nav-links {
+  display: flex; gap: 4px;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--charcoal);
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--navy); background: var(--off-white); }
+.nav-links a.active { color: var(--teal); }
+
+.nav-cta {
+  display: flex; gap: 10px; align-items: center;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px;
+  border-radius: 99px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  border: none;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--teal);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,180,166,0.35); }
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  border: 2px solid var(--light-gray);
+}
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+/* Hamburger */
+.hamburger { display:none; background:none; border:none; cursor:pointer; padding:4px; }
+.hamburger span {
+  display:block; width:24px; height:2px;
+  background: var(--navy); border-radius:2px;
+  margin: 5px 0;
+  transition: all 0.3s;
+}
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--navy) 0%, #0d4a7a 55%, #0a6b7a 100%);
+}
+.hero-bg-shapes {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.hero-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.06;
+  background: var(--white);
+}
+.hero-circle:nth-child(1) { width:600px; height:600px; top:-200px; right:-100px; }
+.hero-circle:nth-child(2) { width:400px; height:400px; bottom:-150px; left:-100px; }
+.hero-circle:nth-child(3) { width:200px; height:200px; top:30%; left:40%; opacity:0.04; }
+
+.hero-grid-line {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1280px; margin: 0 auto;
+  padding: 80px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,180,166,0.15);
+  border: 1px solid rgba(0,180,166,0.3);
+  color: var(--teal);
+  padding: 6px 16px;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero-badge .dot {
+  width: 7px; height: 7px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.18;
+  margin-bottom: 20px;
+}
+.hero-title span { color: var(--teal); }
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  max-width: 520px;
+}
+
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+.btn-hero-primary {
+  background: var(--teal);
+  color: var(--white);
+  padding: 14px 32px;
+  font-size: 0.95rem;
+}
+.btn-hero-primary:hover { background: var(--teal-light); transform:translateY(-2px); box-shadow:0 12px 32px rgba(0,180,166,0.4); }
+.btn-hero-outline {
+  background: rgba(255,255,255,0.08);
+  color: var(--white);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  padding: 14px 32px;
+  font-size: 0.95rem;
+}
+.btn-hero-outline:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.5); }
+
+.hero-trust {
+  display: flex; gap: 28px; flex-wrap: wrap;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 9px;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.trust-item i { color: var(--teal); font-size: 0.9rem; }
+
+/* Hero right — Quick Appointment Card */
+.hero-card {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px;
+  padding: 36px;
+  animation: floatCard 4s ease-in-out infinite;
+}
+@keyframes floatCard { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+.hero-card h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--white);
+  font-size: 1.3rem;
+  margin-bottom: 6px;
+}
+.hero-card p { color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 24px; }
+
+.quick-form-group { margin-bottom: 14px; }
+.quick-form-group label {
+  display: block;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.quick-form-group select,
+.quick-form-group input {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--white);
+  padding: 11px 16px;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.quick-form-group select:focus,
+.quick-form-group input:focus { border-color: var(--teal); }
+.quick-form-group select option { background: var(--navy); }
+
+.card-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: 20px;
+}
+.card-stat {
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  text-align: center;
+}
+.card-stat-num {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--teal);
+}
+.card-stat-label {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ─── STATS STRIP ─── */
+.stats-strip {
+  background: var(--navy);
+  padding: 40px 60px;
+}
+.stats-grid {
+  max-width: 1280px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.stat-item {
+  text-align: center;
+  padding: 20px 30px;
+  position: relative;
+}
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute; right: 0; top: 20%; bottom: 20%;
+  width: 1px; background: rgba(255,255,255,0.1);
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--teal);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+/* ─── SECTIONS ─── */
+section { padding: 90px 60px; }
+.section-inner { max-width: 1280px; margin: 0 auto; }
+
+.section-tag {
+  display: inline-block;
+  color: var(--teal);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.section-sub {
+  color: var(--gray);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 560px;
+}
+.section-header { margin-bottom: 52px; }
+.section-header.centered { text-align: center; }
+.section-header.centered .section-sub { margin: 0 auto; }
+
+/* ─── SERVICES ─── */
+.services-section { background: var(--off-white); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.service-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  border: 1px solid var(--light-gray);
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--teal);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.service-card:hover::before { transform: scaleX(1); }
+
+.service-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+.service-card:hover .service-icon { transform: scale(1.1); }
+
+.si-blue { background: #EBF3FF; color: var(--navy); }
+.si-teal { background: #E0F9F7; color: var(--teal); }
+.si-purple { background: #F0EEFF; color: #7C3AED; }
+.si-orange { background: #FFF3E8; color: #EA6C00; }
+.si-green { background: #E8FBF0; color: #059669; }
+.si-pink { background: #FEE8F0; color: #DB2777; }
+
+.service-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.service-card p { color: var(--gray); font-size: 0.87rem; line-height: 1.65; margin-bottom: 18px; }
+.service-link {
+  color: var(--teal);
+  font-size: 0.83rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: gap 0.2s;
+}
+.service-link:hover { gap: 10px; }
+
+/* ─── WHY CHOOSE US ─── */
+.why-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.why-image {
+  position: relative;
+}
+.why-img-main {
+  width: 100%;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--navy) 0%, #0d4a7a 100%);
+  height: 480px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+  font-size: 5rem;
+  position: relative;
+  overflow: hidden;
+}
+.why-img-main::before {
+  content:'';
+  position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.why-badge-float {
+  position: absolute;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 16px 20px;
+  box-shadow: var(--shadow-md);
+  display: flex; align-items: center; gap: 12px;
+}
+.why-badge-float.b1 { bottom: 30px; left: -30px; }
+.why-badge-float.b2 { top: 30px; right: -30px; }
+.why-badge-icon { width:40px; height:40px; border-radius:10px; background:var(--off-white); display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+.why-badge-text strong { display:block; font-size:0.9rem; color:var(--navy); }
+.why-badge-text span { font-size:0.75rem; color:var(--gray); }
+
+.why-features { display: flex; flex-direction: column; gap: 22px; margin-top: 32px; }
+.why-feature {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--light-gray);
+  transition: all 0.3s;
+}
+.why-feature:hover { border-color: var(--teal); background: #F0FFFE; }
+.why-feature-icon {
+  width: 44px; height: 44px; min-width: 44px;
+  border-radius: 12px;
+  background: var(--teal);
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+.why-feature h4 { font-size: 0.95rem; color: var(--navy); margin-bottom: 4px; font-weight: 600; }
+.why-feature p { font-size: 0.83rem; color: var(--gray); line-height: 1.6; }
+
+/* ─── DOCTORS ─── */
+.doctors-section { background: var(--off-white); }
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.doctor-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.35s;
+}
+.doctor-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+.doctor-img {
+  height: 220px;
+  background: linear-gradient(160deg, var(--navy), #0d6b80);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem;
+  color: rgba(255,255,255,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.doctor-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(10,46,92,0.4) 100%);
+}
+.doctor-specialty-tag {
+  position: absolute; bottom: 14px; left: 14px;
+  background: var(--teal);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 99px;
+  letter-spacing: 0.5px;
+}
+.doctor-info { padding: 24px; }
+.doctor-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.doctor-info .specialty { color: var(--gray); font-size: 0.83rem; margin-bottom: 14px; }
+.doctor-meta { display:flex; gap: 16px; margin-bottom: 18px; }
+.doctor-meta span { font-size: 0.78rem; color: var(--gray); display:flex; align-items:center; gap:5px; }
+.doctor-meta i { color: var(--teal); }
+.doctor-stars { color: #F4A261; font-size: 0.8rem; margin-bottom: 18px; }
+.doctor-stars span { color: var(--gray); margin-left: 6px; font-size: 0.75rem; }
+
+/* ─── TESTIMONIALS ─── */
+.testimonials-section { background: var(--navy); }
+.testimonials-section .section-title { color: var(--white); }
+.testimonials-section .section-tag { color: var(--teal); }
+.testimonials-section .section-sub { color: rgba(255,255,255,0.55); }
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.testimonial-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 32px;
+  transition: all 0.3s;
+}
+.testimonial-card:hover { background: rgba(255,255,255,0.09); border-color: rgba(0,180,166,0.3); }
+.t-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 16px; }
+.t-text { color: rgba(255,255,255,0.75); font-size: 0.9rem; line-height: 1.75; margin-bottom: 24px; font-style: italic; }
+.t-quote-icon { color: var(--teal); font-size: 1.5rem; margin-bottom: 12px; opacity: 0.5; }
+.t-author { display:flex; align-items:center; gap: 12px; }
+.t-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--navy-light));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.t-name { color: var(--white); font-size: 0.88rem; font-weight: 600; }
+.t-detail { color: rgba(255,255,255,0.45); font-size: 0.75rem; }
+
+/* ─── NEWS ─── */
+.news-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 28px;
+}
+.news-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--light-gray);
+  transition: all 0.3s;
+}
+.news-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.news-img {
+  height: 180px;
+  background: linear-gradient(135deg, #e8f4fd, #d0eaf9);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem;
+}
+.news-card.featured .news-img { height: 240px; font-size: 3.5rem; }
+.news-body { padding: 22px; }
+.news-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: #E0F9F7;
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+}
+.news-body h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--navy);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+.news-card.featured .news-body h3 { font-size: 1.25rem; }
+.news-body p { color: var(--gray); font-size: 0.82rem; line-height: 1.65; margin-bottom: 14px; }
+.news-meta { display:flex; gap: 16px; font-size: 0.75rem; color: var(--gray); }
+.news-meta i { margin-right: 4px; color: var(--teal); }
+
+/* ─── INSURANCE ─── */
+.insurance-section { background: var(--off-white); padding: 50px 60px; }
+.insurance-inner { max-width: 1280px; margin: 0 auto; text-align: center; }
+.insurance-inner p { color: var(--gray); font-size: 0.88rem; margin-bottom: 32px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }
+.insurance-logos {
+  display: flex; gap: 32px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.insurance-logo {
+  background: var(--white);
+  border: 1px solid var(--light-gray);
+  border-radius: 12px;
+  padding: 16px 28px;
+  font-weight: 700;
+  color: var(--gray);
+  font-size: 0.88rem;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+.insurance-logo:hover { border-color: var(--teal); color: var(--navy); }
+
+/* ─── CTA BANNER ─── */
+.cta-section {
+  background: linear-gradient(135deg, var(--teal) 0%, #008a7e 100%);
+  padding: 70px 60px;
+  text-align: center;
+}
+.cta-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+.cta-section p { color: rgba(255,255,255,0.8); font-size: 1rem; margin-bottom: 32px; }
+.btn-cta-white {
+  background: var(--white);
+  color: var(--teal);
+  padding: 14px 36px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: #060E1E;
+  color: rgba(255,255,255,0.65);
+  padding: 70px 60px 0;
+}
+.footer-grid {
+  max-width: 1280px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 48px;
+  padding-bottom: 50px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.footer-col h4 {
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.footer-col p { font-size: 0.85rem; line-height: 1.75; margin-bottom: 20px; }
+.footer-socials { display:flex; gap: 10px; }
+.social-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.social-btn:hover { background: var(--teal); border-color: var(--teal); color: var(--white); }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--teal); }
+.footer-contact-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-bottom: 14px; font-size: 0.84rem;
+}
+.footer-contact-item i { color: var(--teal); margin-top: 2px; min-width: 14px; }
+.newsletter-form { display: flex; gap: 8px; margin-top: 8px; }
+.newsletter-form input {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--white);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+}
+.newsletter-form button {
+  background: var(--teal);
+  color: var(--white);
+  border: none;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+.newsletter-form button:hover { background: var(--teal-light); }
+
+.footer-bottom {
+  max-width: 1280px; margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+}
+.footer-bottom a { color: rgba(255,255,255,0.35); text-decoration: none; }
+.footer-bottom a:hover { color: var(--teal); }
+.footer-bottom-links { display:flex; gap: 20px; }
+
+/* ─── BACK TO TOP ─── */
+#backToTop {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 44px; height: 44px;
+  background: var(--teal);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0; visibility: hidden;
+  transition: all 0.3s;
+  z-index: 300;
+}
+#backToTop.visible { opacity:1; visibility:visible; }
+#backToTop:hover { background: var(--navy); transform: translateY(-3px); }
+
+/* ─── WHATSAPP ─── */
+.whatsapp-btn {
+  position: fixed; bottom: 80px; right: 28px;
+  width: 50px; height: 50px;
+  background: #25D366;
+  color: var(--white);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(37,211,102,0.35);
+  z-index: 300;
+  transition: all 0.3s;
+  animation: whatsappPulse 3s infinite;
+}
+.whatsapp-btn:hover { transform: scale(1.1); }
+@keyframes whatsappPulse { 0%,100%{box-shadow:0 8px 24px rgba(37,211,102,0.35)} 50%{box-shadow:0 8px 40px rgba(37,211,102,0.6)} }
+
+/* ─── COOKIE BANNER ─── */
+#cookieBanner {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  color: var(--white);
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  z-index: 800;
+  font-size: 0.85rem;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+#cookieBanner.visible { transform: translateY(0); }
+#cookieBanner p { color: rgba(255,255,255,0.75); flex: 1; }
+#cookieBanner a { color: var(--teal); }
+.cookie-btns { display:flex; gap:10px; }
+.cookie-accept {
+  background: var(--teal); color: var(--white);
+  border: none; padding: 8px 20px;
+  border-radius: 6px; cursor: pointer;
+  font-family:'DM Sans',sans-serif; font-size:0.83rem; font-weight:600;
+}
+.cookie-decline {
+  background: transparent; color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px;
+  border-radius: 6px; cursor: pointer;
+  font-family:'DM Sans',sans-serif; font-size:0.83rem;
+}
+
+/* ─── MOBILE MENU ─── */
+.mobile-menu {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--white);
+  z-index: 400;
+  flex-direction: column;
+  padding: 30px;
+  overflow-y: auto;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; }
+.mobile-close { background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--navy); }
+.mobile-nav-links { list-style:none; display:flex; flex-direction:column; gap:4px; flex:1; }
+.mobile-nav-links a {
+  display: block;
+  padding: 14px 16px;
+  color: var(--charcoal);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+.mobile-nav-links a:hover { background: var(--off-white); color: var(--navy); }
+.mobile-cta { margin-top: 24px; display:flex; flex-direction:column; gap:10px; }
+
+/* ─── ANIMATIONS ─── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity:1; transform:translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  nav, .top-bar, section, .stats-strip, footer, .insurance-section, .cta-section { padding-left: 32px; padding-right: 32px; }
+  .services-grid, .doctors-grid, .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  .news-grid { grid-template-columns: 1fr 1fr; }
+  .news-card.featured { grid-column: span 2; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .hero-content { padding: 60px 32px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .top-bar, .nav-links { display: none !important; }
+  .hamburger { display:block; }
+  nav { padding: 0 20px; }
+  .nav-cta .btn-outline { display:none; }
+  .hero-content { grid-template-columns: 1fr; padding: 60px 20px; text-align: center; }
+  .hero-subtitle { max-width: 100%; }
+  .hero-actions { justify-content: center; }
+  .hero-trust { justify-content: center; }
+  .hero-card { display: none; }
+  section { padding: 60px 20px; }
+  .services-grid, .doctors-grid, .testimonials-grid, .news-grid, .why-section { grid-template-columns: 1fr; }
+  .why-image { display: none; }
+  .news-card.featured { grid-column: span 1; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .insurance-section, .cta-section { padding: 50px 20px; }
+  footer { padding: 50px 20px 0; }
+  .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  .stats-strip { padding: 30px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">Lars <span>Medical</span></div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-plus"></i></div>
+      <div class="logo-text">
+        <span class="logo-name">Lars Medical</span>
+        <span class="logo-tag">Advanced Care. Human Touch.</span>
+      </div>
+    </a>
+    <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  </div>
+  <ul class="mobile-nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="doctors.html">Doctors</a></li>
+    <li><a href="appointments.html">Appointments</a></li>
+    <li><a href="portal.html">Patient Portal</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="mobile-cta">
+    <a href="appointments.html" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+    <a href="portal.html" class="btn btn-outline">Patient Portal</a>
+  </div>
+</div>
+
+<!-- EMERGENCY BANNER -->
+<div class="emergency-banner">
+  🚨 <strong>Emergency?</strong> Call our 24/7 hotline: <a href="tel:+18005277633">+1-800-LARS-MED</a> &nbsp;|&nbsp; For life-threatening emergencies <a href="tel:911">call 911</a>
+</div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <span><i class="fas fa-phone"></i> +1 (555) 247-8900</span>
+    <span><i class="fas fa-clock"></i> Mon–Fri: 8:00AM – 8:00PM</span>
+    <span><i class="fas fa-map-marker-alt"></i> 142 Wellness Blvd, MedCity, CA 90210</span>
+  </div>
+  <div class="top-bar-right">
+    <a href="portal.html"><i class="fas fa-user"></i> Patient Portal</a>
+    <a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="mainHeader">
+  <nav>
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-plus"></i></div>
+      <div class="logo-text">
+        <span class="logo-name">Lars Medical Center</span>
+        <span class="logo-tag">Advanced Care. Human Touch.</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="doctors.html">Doctors</a></li>
+      <li><a href="appointments.html">Appointments</a></li>
+      <li><a href="portal.html">Patient Portal</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="tel:+15552478900" class="btn btn-outline"><i class="fas fa-phone"></i> Call Now</a>
+      <a href="appointments.html" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-shapes">
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-grid-line"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-left fade-up">
+      <div class="hero-badge"><span class="dot"></span> Accredited Center of Excellence</div>
+      <h1 class="hero-title">World-Class Healthcare,<br><span>Close to Home.</span></h1>
+      <p class="hero-subtitle">Lars Medical Center combines cutting-edge medicine with genuine compassionate care. From routine check-ups to complex procedures — your health is in the best hands.</p>
+      <div class="hero-actions">
+        <a href="appointments.html" class="btn btn-hero-primary"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+        <a href="services.html" class="btn btn-hero-outline"><i class="fas fa-stethoscope"></i> Our Services</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><i class="fas fa-shield-alt"></i> JCI Accredited</div>
+        <div class="trust-item"><i class="fas fa-clock"></i> 24/7 Emergency</div>
+        <div class="trust-item"><i class="fas fa-user-md"></i> 500+ Specialists</div>
+        <div class="trust-item"><i class="fas fa-star"></i> 98% Satisfaction</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card fade-up">
+        <h3>Quick Appointment</h3>
+        <p>Book your visit in under 2 minutes</p>
+        <div class="quick-form-group">
+          <label>Department</label>
+          <select>
+            <option>Select Department</option>
+            <option>Cardiology</option>
+            <option>Neurology</option>
+            <option>Orthopedics</option>
+            <option>Pediatrics</option>
+            <option>Oncology</option>
+            <option>General Medicine</option>
+          </select>
+        </div>
+        <div class="quick-form-group">
+          <label>Preferred Date</label>
+          <input type="date"/>
+        </div>
+        <a href="appointments.html" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;padding:13px;">
+          <i class="fas fa-search"></i> Find Available Slots
+        </a>
+        <div class="card-stats">
+          <div class="card-stat"><span class="card-stat-num">25+</span><span class="card-stat-label">Years Experience</span></div>
+          <div class="card-stat"><span class="card-stat-num">1M+</span><span class="card-stat-label">Patients Treated</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-grid">
+    <div class="stat-item fade-up">
+      <div class="stat-num" data-target="500">0<span>+</span></div>
+      <div class="stat-label">Medical Specialists</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-num" data-target="1">0<span>M+ Patients</span></div>
+      <div class="stat-label">Treated Successfully</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-num" data-target="98">0<span>%</span></div>
+      <div class="stat-label">Patient Satisfaction</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-num" data-target="25">0<span>+ Years</span></div>
+      <div class="stat-label">Of Trusted Care</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services-section">
+  <div class="section-inner">
+    <div class="section-header centered fade-up">
+      <span class="section-tag">What We Offer</span>
+      <h2 class="section-title">Comprehensive Medical Services</h2>
+      <p class="section-sub">From preventive care to advanced surgical procedures, our multidisciplinary teams are here to guide your health journey.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-up">
+        <div class="service-icon si-blue"><i class="fas fa-heartbeat"></i></div>
+        <h3>Cardiology</h3>
+        <p>Advanced heart care from diagnosis to intervention. Our board-certified cardiologists use the latest technologies to protect your heart health.</p>
+        <a href="services.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon si-teal"><i class="fas fa-brain"></i></div>
+        <h3>Neurology</h3>
+        <p>Expert diagnosis and treatment of neurological conditions including stroke, epilepsy, Parkinson's, and complex brain disorders.</p>
+        <a href="services.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon si-purple"><i class="fas fa-ribbon"></i></div>
+        <h3>Oncology</h3>
+        <p>Comprehensive cancer care with cutting-edge treatments, personalized therapy plans, and a dedicated supportive care team.</p>
+        <a href="services.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon si-orange"><i class="fas fa-bone"></i></div>
+        <h3>Orthopedics</h3>
+        <p>From sports injuries to joint replacements, our orthopedic surgeons deliver precision care to get you back to full mobility.</p>
+        <a href="services.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon si-green"><i class="fas fa-baby"></i></div>
+        <h3>Pediatrics</h3>
+        <p>Gentle, specialized healthcare for infants, children, and adolescents. We make every young patient feel safe and cared for.</p>
+        <a href="services.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon si-pink"><i class="fas fa-ambulance"></i></div>
+        <h3>Emergency Medicine</h3>
+        <p>24/7 emergency services with rapid response teams, trauma bays, and direct access to all specialty departments.</p>
+        <a href="services.html" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;" class="fade-up">
+      <a href="services.html" class="btn btn-outline" style="border-color:var(--teal);color:var(--teal);padding:13px 32px;">View All 12 Departments <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section>
+  <div class="section-inner">
+    <div class="why-section">
+      <div class="why-image">
+        <div class="why-img-main">
+          <i class="fas fa-hospital-user" style="position:relative;z-index:1;color:rgba(255,255,255,0.15);"></i>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;">
+            <div style="text-align:center;color:var(--white);">
+              <i class="fas fa-plus-circle" style="font-size:4rem;color:var(--teal);margin-bottom:16px;display:block;"></i>
+              <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;">Lars Medical Center</div>
+              <div style="font-size:0.85rem;opacity:0.6;margin-top:6px;">Est. 1999 · MedCity, CA</div>
+            </div>
+          </div>
+        </div>
+        <div class="why-badge-float b1">
+          <div class="why-badge-icon" style="background:#E0F9F7;color:var(--teal);"><i class="fas fa-award"></i></div>
+          <div class="why-badge-text"><strong>JCI Accredited</strong><span>International Standard</span></div>
+        </div>
+        <div class="why-badge-float b2">
+          <div class="why-badge-icon" style="background:#EBF3FF;color:var(--navy);"><i class="fas fa-star"></i></div>
+          <div class="why-badge-text"><strong>Top Rated 2024</strong><span>98% Patient Satisfaction</span></div>
+        </div>
+      </div>
+      <div class="why-content fade-up">
+        <span class="section-tag">Why Lars Medical</span>
+        <h2 class="section-title">Trusted by Over a Million Patients</h2>
+        <p class="section-sub" style="margin-bottom:0;">We combine the precision of modern medicine with the warmth of human-centered care — because you deserve both.</p>
+        <div class="why-features">
+          <div class="why-feature">
+            <div class="why-feature-icon"><i class="fas fa-microscope"></i></div>
+            <div>
+              <h4>Advanced Diagnostic Technology</h4>
+              <p>State-of-the-art MRI, CT, PET scanners, and robotic-assisted surgery platforms for precise diagnosis and treatment.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-feature-icon"><i class="fas fa-user-md"></i></div>
+            <div>
+              <h4>Board-Certified Specialists</h4>
+              <p>All 500+ physicians are board-certified with subspecialty training from the world's leading medical institutions.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-feature-icon"><i class="fas fa-hands-helping"></i></div>
+            <div>
+              <h4>Integrated Patient Support</h4>
+              <p>Dedicated care coordinators, financial counselors, and patient navigators guide you through every step of your care.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-feature-icon"><i class="fas fa-globe"></i></div>
+            <div>
+              <h4>International Patient Services</h4>
+              <p>Multilingual support, visa assistance, and dedicated international patient services for patients from over 40 countries.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTORS -->
+<section class="doctors-section">
+  <div class="section-inner">
+    <div class="section-header centered fade-up">
+      <span class="section-tag">Our Team</span>
+      <h2 class="section-title">Meet Our Leading Specialists</h2>
+      <p class="section-sub">500+ world-class physicians committed to your health. Board-certified, compassionate, and dedicated to excellence.</p>
+    </div>
+    <div class="doctors-grid">
+      <div class="doctor-card fade-up">
+        <div class="doctor-img">
+          <i class="fas fa-user-md"></i>
+          <div class="doctor-img-overlay"></div>
+          <span class="doctor-specialty-tag">Cardiology</span>
+        </div>
+        <div class="doctor-info">
+          <h3>Dr. Amara Osei-Mensah</h3>
+          <p class="specialty">Interventional Cardiologist</p>
+          <div class="doctor-meta">
+            <span><i class="fas fa-briefcase"></i> 18 yrs experience</span>
+            <span><i class="fas fa-graduation-cap"></i> Harvard Med</span>
+          </div>
+          <div class="doctor-stars">★★★★★ <span>(4.9 · 312 reviews)</span></div>
+          <a href="appointments.html" class="btn btn-primary" style="width:100%;justify-content:center;">Book Appointment</a>
+        </div>
+      </div>
+      <div class="doctor-card fade-up">
+        <div class="doctor-img" style="background:linear-gradient(160deg,#1a3a5c,#0d6b60);">
+          <i class="fas fa-user-md"></i>
+          <div class="doctor-img-overlay"></div>
+          <span class="doctor-specialty-tag">Neurology</span>
+        </div>
+        <div class="doctor-info">
+          <h3>Dr. Sarah Lindqvist</h3>
+          <p class="specialty">Neurologist & Epileptologist</p>
+          <div class="doctor-meta">
+            <span><i class="fas fa-briefcase"></i> 14 yrs experience</span>
+            <span><i class="fas fa-graduation-cap"></i> Johns Hopkins</span>
+          </div>
+          <div class="doctor-stars">★★★★★ <span>(4.8 · 254 reviews)</span></div>
+          <a href="appointments.html" class="btn btn-primary" style="width:100%;justify-content:center;">Book Appointment</a>
+        </div>
+      </div>
+      <div class="doctor-card fade-up">
+        <div class="doctor-img" style="background:linear-gradient(160deg,#2a1a5c,#4a1a6b);">
+          <i class="fas fa-user-md"></i>
+          <div class="doctor-img-overlay"></div>
+          <span class="doctor-specialty-tag">Oncology</span>
+        </div>
+        <div class="doctor-info">
+          <h3>Dr. Marcus Chen, MD</h3>
+          <p class="specialty">Medical Oncologist</p>
+          <div class="doctor-meta">
+            <span><i class="fas fa-briefcase"></i> 22 yrs experience</span>
+            <span><i class="fas fa-graduation-cap"></i> Stanford Med</span>
+          </div>
+          <div class="doctor-stars">★★★★★ <span>(4.9 · 401 reviews)</span></div>
+          <a href="appointments.html" class="btn btn-primary" style="width:100%;justify-content:center;">Book Appointment</a>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;" class="fade-up">
+      <a href="doctors.html" class="btn btn-outline" style="border-color:var(--navy);color:var(--navy);padding:13px 32px;">View All Doctors <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section-inner">
+    <div class="section-header centered fade-up">
+      <span class="section-tag">Patient Stories</span>
+      <h2 class="section-title">What Our Patients Say</h2>
+      <p class="section-sub">Real stories from real patients. Their trust inspires everything we do.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card fade-up">
+        <div class="t-quote-icon"><i class="fas fa-quote-left"></i></div>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">From the moment I walked in, I felt genuinely cared for. Dr. Osei-Mensah's expertise and bedside manner gave me confidence through my entire heart procedure. I'm back to hiking — something I thought I'd never do again.</p>
+        <div class="t-author">
+          <div class="t-avatar">JR</div>
+          <div>
+            <div class="t-name">James Robertson</div>
+            <div class="t-detail">Cardiac Patient · Verified Review</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up">
+        <div class="t-quote-icon"><i class="fas fa-quote-left"></i></div>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">Lars Medical Center treated my daughter with such warmth and precision. The pediatrics team is extraordinary — they turned a frightening situation into one where my child actually felt safe and calm. Forever grateful.</p>
+        <div class="t-author">
+          <div class="t-avatar">AM</div>
+          <div>
+            <div class="t-name">Abena Mensah</div>
+            <div class="t-detail">Pediatric Parent · Verified Review</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up">
+        <div class="t-quote-icon"><i class="fas fa-quote-left"></i></div>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">The oncology team at Lars Medical gave me hope when I needed it most. The personalized treatment plan, the support staff, and the follow-up care have all been outstanding. Eighteen months cancer-free and counting.</p>
+        <div class="t-author">
+          <div class="t-avatar">LT</div>
+          <div>
+            <div class="t-name">Linda Thompson</div>
+            <div class="t-detail">Oncology Patient · Verified Review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section>
+  <div class="section-inner">
+    <div class="section-header fade-up" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;">
+      <div>
+        <span class="section-tag">Latest Updates</span>
+        <h2 class="section-title" style="margin-bottom:0;">Health News & Insights</h2>
+      </div>
+      <a href="news.html" class="btn btn-outline" style="border-color:var(--teal);color:var(--teal);">All Articles <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="news-grid">
+      <div class="news-card featured fade-up">
+        <div class="news-img" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);font-size:4rem;">🫀</div>
+        <div class="news-body">
+          <span class="news-tag">Research</span>
+          <h3>Lars Medical Pioneers Minimally Invasive Heart Valve Replacement for High-Risk Patients</h3>
+          <p>Our cardiology team has successfully completed 100+ TAVR procedures this year, offering new hope for patients previously deemed inoperable.</p>
+          <div class="news-meta">
+            <span><i class="fas fa-calendar"></i> May 8, 2025</span>
+            <span><i class="fas fa-clock"></i> 5 min read</span>
+          </div>
+        </div>
+      </div>
+      <div class="news-card fade-up">
+        <div class="news-img" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);">🧠</div>
+        <div class="news-body">
+          <span class="news-tag">Health Tips</span>
+          <h3>5 Early Warning Signs of Stroke You Should Never Ignore</h3>
+          <p>Our neurology experts share the critical FAST signs and when to seek immediate care.</p>
+          <div class="news-meta">
+            <span><i class="fas fa-calendar"></i> Apr 22, 2025</span>
+            <span><i class="fas fa-clock"></i> 3 min read</span>
+          </div>
+        </div>
+      </div>
+      <div class="news-card fade-up">
+        <div class="news-img" style="background:linear-gradient(135deg,#fef9c3,#fde68a);">🌟</div>
+        <div class="news-body">
+          <span class="news-tag">Hospital News</span>
+          <h3>Lars Medical Center Receives International Accreditation for the 4th Consecutive Year</h3>
+          <p>We're proud to maintain JCI accreditation, the gold standard in global healthcare quality.</p>
+          <div class="news-meta">
+            <span><i class="fas fa-calendar"></i> Mar 15, 2025</span>
+            <span><i class="fas fa-clock"></i> 2 min read</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE -->
+<div class="insurance-section">
+  <div class="insurance-inner fade-up">
+    <p>Accepted Insurance Partners</p>
+    <div class="insurance-logos">
+      <div class="insurance-logo">BLUECROSS</div>
+      <div class="insurance-logo">AETNA</div>
+      <div class="insurance-logo">CIGNA</div>
+      <div class="insurance-logo">UNITED</div>
+      <div class="insurance-logo">HUMANA</div>
+      <div class="insurance-logo">MEDICARE</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section fade-up">
+  <h2>Ready to Take the First Step?</h2>
+  <p>Book your appointment today and experience healthcare that truly puts you first.</p>
+  <a href="appointments.html" class="btn btn-cta-white"><i class="fas fa-calendar-plus"></i> Book Your Appointment</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <a href="index.html" class="logo" style="margin-bottom:16px;display:flex;">
+        <div class="logo-icon"><i class="fas fa-plus"></i></div>
+        <div class="logo-text">
+          <span class="logo-name" style="color:var(--white);">Lars Medical Center</span>
+          <span class="logo-tag">Advanced Care. Human Touch.</span>
+        </div>
+      </a>
+      <p>Providing world-class healthcare with compassion and precision since 1999. Accredited, trusted, and committed to your lifelong wellbeing.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="services.html">Our Services</a></li>
+        <li><a href="doctors.html">Find a Doctor</a></li>
+        <li><a href="appointments.html">Book Appointment</a></li>
+        <li><a href="portal.html">Patient Portal</a></li>
+        <li><a href="news.html">News & Blog</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Our Services</h4>
+      <ul class="footer-links">
+        <li><a href="services.html">Cardiology</a></li>
+        <li><a href="services.html">Neurology</a></li>
+        <li><a href="services.html">Oncology</a></li>
+        <li><a href="services.html">Orthopedics</a></li>
+        <li><a href="services.html">Pediatrics</a></li>
+        <li><a href="services.html">Emergency Medicine</a></li>
+        <li><a href="services.html">Radiology & Imaging</a></li>
+        <li><a href="services.html">Mental Health</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Info</h4>
+      <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>142 Wellness Blvd, MedCity, CA 90210, USA</span></div>
+      <div class="footer-contact-item"><i class="fas fa-phone"></i><span>+1 (555) 247-8900</span></div>
+      <div class="footer-contact-item"><i class="fas fa-ambulance"></i><span style="color:#f87171;">Emergency: +1-800-LARS-MED</span></div>
+      <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>info@larsmédical.com</span></div>
+      <div class="footer-contact-item"><i class="fas fa-clock"></i><span>Mon–Fri: 8AM–8PM<br>Sat–Sun: 9AM–5PM<br>ER: Open 24/7</span></div>
+      <h4 style="margin-top:20px;margin-bottom:10px;">Newsletter</h4>
+      <p style="font-size:0.8rem;margin-bottom:8px;">Get health tips & hospital news.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Your email"/>
+        <button><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Lars Medical Center. All rights reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Sitemap</a>
+      <a href="#">Accessibility</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<a href="https://wa.me/15552478900" class="whatsapp-btn" target="_blank" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<button id="backToTop" title="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner">
+  <p>We use cookies to enhance your experience. By continuing to browse, you agree to our <a href="#">Privacy Policy</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="cookieAccept">Accept All</button>
+    <button class="cookie-decline" id="cookieDecline">Decline</button>
+  </div>
+</div>
+
+<script>
+// ── LOADER
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+    // Show cookie banner
+    setTimeout(() => document.getElementById('cookieBanner').classList.add('visible'), 1200);
+  }, 2000);
+});
+
+// ── MOBILE MENU
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+document.getElementById('mobileClose').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+});
+
+// ── STICKY HEADER
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('mainHeader');
+  header.classList.toggle('scrolled', window.scrollY > 10);
+  const btn = document.getElementById('backToTop');
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── BACK TO TOP
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── COOKIE BANNER
+document.getElementById('cookieAccept').addEventListener('click', () => {
+  document.getElementById('cookieBanner').style.transform = 'translateY(100%)';
+});
+document.getElementById('cookieDecline').addEventListener('click', () => {
+  document.getElementById('cookieBanner').style.transform = 'translateY(100%)';
+});
+
+// ── INTERSECTION OBSERVER (fade-up animations)
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── ANIMATED COUNTERS
+const counters = document.querySelectorAll('.stat-num[data-target]');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.getAttribute('data-target'));
+      const suffix = el.innerHTML.replace(/\d+/, '').replace(/^0/, '');
+      let current = 0;
+      const step = target / 60;
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.innerHTML = Math.floor(current) + suffix;
+        if (current >= target) clearInterval(timer);
+      }, 25);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
+</script>
+</body>
+</html>
