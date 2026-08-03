@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Our Staff — Lars Medical Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root {
+  --navy: #0A2E5C;
+  --navy-light: #0d3a73;
+  --teal: #00B4A6;
+  --teal-light: #00d4c4;
+  --white: #FFFFFF;
+  --off-white: #F7F9FC;
+  --charcoal: #2D2D2D;
+  --gray: #6B7280;
+  --light-gray: #E8EDF4;
+  --red-emergency: #E63946;
+  --gold: #F4A261;
+  --shadow-sm: 0 2px 8px rgba(10,46,92,0.08);
+  --shadow-md: 0 8px 32px rgba(10,46,92,0.12);
+  --shadow-lg: 0 20px 60px rgba(10,46,92,0.18);
+  --radius: 16px;
+  --radius-sm: 8px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; color: var(--charcoal); background: var(--white); overflow-x: hidden; }
+
+/* ─── LOADER ─── */
+#loader { position: fixed; inset: 0; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.6s ease, visibility 0.6s ease; }
+#loader.hidden { opacity:0; visibility:hidden; }
+.loader-logo { font-family: 'Playfair Display', serif; color: var(--white); font-size: 2rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 12px; }
+.loader-logo span { color: var(--teal); }
+.loader-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 99px; overflow: hidden; }
+.loader-bar-fill { height: 100%; background: var(--teal); border-radius: 99px; animation: loadFill 1.8s ease forwards; }
+@keyframes loadFill { from{width:0} to{width:100%} }
+
+/* ─── EMERGENCY / TOP BAR ─── */
+.emergency-banner { background: var(--red-emergency); color: var(--white); text-align: center; padding: 9px 20px; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.3px; position: relative; z-index: 100; }
+.emergency-banner a { color: var(--white); text-decoration: underline; }
+.top-bar { background: var(--navy); color: rgba(255,255,255,0.75); font-size: 0.8rem; padding: 8px 60px; display: flex; justify-content: space-between; align-items: center; }
+.top-bar a { color: rgba(255,255,255,0.75); text-decoration: none; }
+.top-bar a:hover { color: var(--teal); }
+.top-bar-left, .top-bar-right { display: flex; gap: 24px; align-items: center; }
+.top-bar i { margin-right: 5px; color: var(--teal); }
+
+/* ─── HEADER / NAV ─── */
+header { position: sticky; top: 0; z-index: 500; background: var(--white); box-shadow: var(--shadow-sm); transition: box-shadow 0.3s; }
+header.scrolled { box-shadow: var(--shadow-md); }
+nav { display: flex; align-items: center; justify-content: space-between; padding: 0 60px; height: 72px; }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-icon { width: 42px; height: 42px; background: var(--navy); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--teal); font-size: 1.2rem; }
+.logo-text { font-family: 'Playfair Display', serif; }
+.logo-name { display:block; font-size: 1.1rem; font-weight: 700; color: var(--navy); line-height:1.1; }
+.logo-tag { display:block; font-size: 0.65rem; color: var(--teal); font-family:'DM Sans',sans-serif; letter-spacing:1.5px; text-transform:uppercase; }
+.nav-links { display: flex; gap: 4px; list-style: none; align-items: center; }
+.nav-links a { text-decoration: none; color: var(--charcoal); font-size: 0.88rem; font-weight: 500; padding: 8px 14px; border-radius: var(--radius-sm); transition: all 0.2s; }
+.nav-links a:hover { color: var(--navy); background: var(--off-white); }
+.nav-links a.active { color: var(--teal); }
+.nav-cta { display: flex; gap: 10px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 99px; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.25s; border: none; text-decoration: none; }
+.btn-primary { background: var(--teal); color: var(--white); }
+.btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,180,166,0.35); }
+.btn-outline { background: transparent; color: var(--navy); border: 2px solid var(--light-gray); }
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+.hamburger { display:none; background:none; border:none; cursor:pointer; padding:4px; }
+.hamburger span { display:block; width:24px; height:2px; background: var(--navy); border-radius:2px; margin: 5px 0; transition: all 0.3s; }
+
+/* ─── PAGE BANNER ─── */
+.page-banner { position: relative; padding: 64px 60px 70px; background: linear-gradient(135deg, var(--navy) 0%, #0d4a7a 55%, #0a6b7a 100%); overflow: hidden; }
+.page-banner-shapes { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.page-banner-shapes .hero-circle { position: absolute; border-radius: 50%; opacity: 0.06; background: var(--white); }
+.page-banner-shapes .hero-circle:nth-child(1) { width:420px; height:420px; top:-180px; right:-80px; }
+.page-banner-shapes .hero-circle:nth-child(2) { width:260px; height:260px; bottom:-140px; left:-80px; }
+.page-banner-inner { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; }
+.breadcrumb { display:flex; gap:8px; align-items:center; color: rgba(255,255,255,0.55); font-size: 0.85rem; margin-bottom: 18px; }
+.breadcrumb a { color: rgba(255,255,255,0.55); text-decoration:none; }
+.breadcrumb a:hover { color: var(--teal); }
+.breadcrumb .current { color: var(--teal); }
+.page-banner h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 700; color: var(--white); margin-bottom: 14px; }
+.page-banner h1 span { color: var(--teal); }
+.page-banner p { color: rgba(255,255,255,0.7); font-size: 1rem; max-width: 640px; line-height: 1.7; }
+
+/* ─── DEPT NAV PILLS ─── */
+.dept-nav { background: var(--off-white); border-bottom: 1px solid var(--light-gray); position: sticky; top: 72px; z-index: 400; }
+.dept-nav-inner { max-width: 1280px; margin: 0 auto; padding: 14px 60px; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+.dept-nav-inner::-webkit-scrollbar { display: none; }
+.dept-pill { flex-shrink: 0; padding: 8px 18px; border-radius: 99px; background: var(--white); border: 1px solid var(--light-gray); color: var(--gray); font-size: 0.82rem; font-weight: 600; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
+.dept-pill:hover, .dept-pill.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+
+/* ─── DEPARTMENT SECTIONS ─── */
+.dept-section { padding: 80px 60px; }
+.dept-section:nth-child(even) { background: var(--off-white); }
+.dept-section-inner { max-width: 1280px; margin: 0 auto; }
+.dept-header { display: flex; align-items: center; gap: 20px; margin-bottom: 44px; }
+.dept-icon { width: 64px; height: 64px; min-width: 64px; border-radius: 18px; background: linear-gradient(135deg, var(--navy), var(--teal)); display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.6rem; box-shadow: var(--shadow-md); }
+.dept-header-text .section-tag { display:block; color: var(--teal); font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.dept-header-text h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 2.4vw, 2.1rem); font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.dept-header-text p { color: var(--gray); font-size: 0.9rem; max-width: 560px; }
+
+/* ─── STAFF GRID & CARD ─── */
+.staff-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
+.staff-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.4s cubic-bezier(.2,.8,.2,1), box-shadow 0.4s;
+}
+.staff-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
+
+.staff-photo {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(0,212,196,0.45), transparent 55%),
+    radial-gradient(circle at 78% 78%, rgba(10,46,92,0.65), transparent 60%),
+    linear-gradient(160deg, var(--navy) 0%, #0d4f74 55%, #0a6b7a 100%);
+  transition: filter 0.5s ease;
+}
+.staff-card:hover .staff-photo { filter: brightness(1.15) saturate(1.15); }
+
+.staff-photo-noise {
+  position: absolute; inset: 0; opacity: 0.5;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.staff-glow {
+  position: absolute; width: 150px; height: 150px; border-radius: 50%;
+  top: 42%; left: 50%; transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(0,212,196,0.55) 0%, rgba(0,212,196,0) 70%);
+  filter: blur(4px);
+  transition: all 0.5s ease;
+}
+.staff-card:hover .staff-glow { background: radial-gradient(circle, rgba(0,212,196,0.85) 0%, rgba(0,212,196,0) 72%); transform: translate(-50%,-50%) scale(1.15); }
+.staff-avatar { position: relative; z-index: 2; font-size: 4.4rem; display:flex; align-items:center; justify-content:center; height:100%; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.35)); transition: transform 0.5s ease; }
+.staff-card:hover .staff-avatar { transform: scale(1.08) translateY(-4px); }
+
+.staff-status {
+  position: absolute; top: 14px; right: 14px; z-index: 3;
+  display:flex; align-items:center; gap:6px;
+  background: rgba(6,14,30,0.55); backdrop-filter: blur(6px);
+  padding: 5px 11px; border-radius: 99px; font-size: 0.68rem; font-weight: 600; color: var(--white); letter-spacing: 0.3px;
+}
+.staff-status .dot { width:6px; height:6px; border-radius:50%; background: var(--teal-light); }
+.staff-status.off .dot { background: var(--gold); }
+
+.staff-overlay {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(6,14,30,0.94) 0%, rgba(6,14,30,0.65) 45%, transparent 85%);
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.staff-card:hover .staff-overlay { opacity: 1; transform: translateY(0); }
+.staff-overlay p { color: rgba(255,255,255,0.85); font-size: 0.78rem; line-height: 1.55; margin-bottom: 10px; }
+.staff-overlay-socials { display: flex; gap: 8px; }
+.staff-overlay-socials a { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; color: var(--white); font-size: 0.72rem; text-decoration: none; transition: all 0.2s; }
+.staff-overlay-socials a:hover { background: var(--teal); border-color: var(--teal); }
+
+.staff-info { padding: 20px 22px 22px; }
+.staff-info h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--navy); margin-bottom: 3px; }
+.staff-info .role { color: var(--teal); font-size: 0.8rem; font-weight: 600; margin-bottom: 12px; }
+.staff-exp { display: flex; align-items: center; gap: 7px; font-size: 0.78rem; color: var(--gray); border-top: 1px solid var(--light-gray); padding-top: 12px; }
+.staff-exp i { color: var(--teal); }
+
+/* ─── CTA ─── */
+.cta-section { background: linear-gradient(135deg, var(--teal) 0%, #008a7e 100%); padding: 70px 60px; text-align: center; }
+.cta-section h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--white); margin-bottom: 14px; }
+.cta-section p { color: rgba(255,255,255,0.8); font-size: 1rem; margin-bottom: 32px; }
+.btn-cta-white { background: var(--white); color: var(--teal); padding: 14px 36px; font-size: 0.95rem; font-weight: 700; }
+.btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
+
+/* ─── FOOTER ─── */
+footer { background: #060E1E; color: rgba(255,255,255,0.65); padding: 70px 60px 0; }
+.footer-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 48px; padding-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.footer-col h4 { color: var(--white); font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+.footer-col p { font-size: 0.85rem; line-height: 1.75; margin-bottom: 20px; }
+.footer-socials { display:flex; gap: 10px; }
+.social-btn { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); font-size: 0.85rem; text-decoration: none; transition: all 0.2s; }
+.social-btn:hover { background: var(--teal); border-color: var(--teal); color: var(--white); }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--teal); }
+.footer-contact-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; font-size: 0.84rem; }
+.footer-contact-item i { color: var(--teal); margin-top: 2px; min-width: 14px; }
+.newsletter-form { display: flex; gap: 8px; margin-top: 8px; }
+.newsletter-form input { flex: 1; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: var(--white); padding: 10px 14px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; outline: none; }
+.newsletter-form button { background: var(--teal); color: var(--white); border: none; padding: 10px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
+.newsletter-form button:hover { background: var(--teal-light); }
+.footer-bottom { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+.footer-bottom a { color: rgba(255,255,255,0.35); text-decoration: none; }
+.footer-bottom a:hover { color: var(--teal); }
+.footer-bottom-links { display:flex; gap: 20px; }
+
+/* ─── FLOATING / COOKIE / MOBILE MENU (shared) ─── */
+#backToTop { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; background: var(--teal); color: var(--white); border: none; border-radius: 12px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 300; }
+#backToTop.visible { opacity:1; visibility:visible; }
+#backToTop:hover { background: var(--navy); transform: translateY(-3px); }
+.whatsapp-btn { position: fixed; bottom: 80px; right: 28px; width: 50px; height: 50px; background: #25D366; color: var(--white); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; text-decoration: none; box-shadow: 0 8px 24px rgba(37,211,102,0.35); z-index: 300; transition: all 0.3s; animation: whatsappPulse 3s infinite; }
+.whatsapp-btn:hover { transform: scale(1.1); }
+@keyframes whatsappPulse { 0%,100%{box-shadow:0 8px 24px rgba(37,211,102,0.35)} 50%{box-shadow:0 8px 40px rgba(37,211,102,0.6)} }
+#cookieBanner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy); color: var(--white); padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; z-index: 800; font-size: 0.85rem; transform: translateY(100%); transition: transform 0.4s ease; }
+#cookieBanner.visible { transform: translateY(0); }
+#cookieBanner p { color: rgba(255,255,255,0.75); flex: 1; }
+#cookieBanner a { color: var(--teal); }
+.cookie-btns { display:flex; gap:10px; }
+.cookie-accept { background: var(--teal); color: var(--white); border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-family:'DM Sans',sans-serif; font-size:0.83rem; font-weight:600; }
+.cookie-decline { background: transparent; color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-family:'DM Sans',sans-serif; font-size:0.83rem; }
+.mobile-menu { display: none; position: fixed; inset: 0; background: var(--white); z-index: 400; flex-direction: column; padding: 30px; overflow-y: auto; }
+.mobile-menu.open { display: flex; }
+.mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; }
+.mobile-close { background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--navy); }
+.mobile-nav-links { list-style:none; display:flex; flex-direction:column; gap:4px; flex:1; }
+.mobile-nav-links a { display: block; padding: 14px 16px; color: var(--charcoal); text-decoration: none; font-size: 1rem; font-weight: 500; border-radius: var(--radius-sm); transition: all 0.2s; }
+.mobile-nav-links a:hover { background: var(--off-white); color: var(--navy); }
+.mobile-cta { margin-top: 24px; display:flex; flex-direction:column; gap:10px; }
+
+/* ─── ANIMATIONS ─── */
+.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1200px) { .staff-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1024px) {
+  nav, .top-bar, .dept-nav-inner, .dept-section, footer, .cta-section, .page-banner { padding-left: 32px; padding-right: 32px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .staff-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .top-bar, .nav-links { display: none !important; }
+  .hamburger { display:block; }
+  nav { padding: 0 20px; }
+  .nav-cta .btn-outline { display:none; }
+  .dept-section { padding: 56px 20px; }
+  .page-banner { padding: 48px 20px 56px; }
+  .dept-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .staff-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .cta-section { padding: 50px 20px; }
+  footer { padding: 50px 20px 0; }
+  .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  .dept-nav { top: 0; }
+}
+@media (max-width: 480px) {
+  .staff-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">Lars <span>Medical</span></div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-plus"></i></div>
+      <div class="logo-text">
+        <span class="logo-name">Lars Medical</span>
+        <span class="logo-tag">Advanced Care. Human Touch.</span>
+      </div>
+    </a>
+    <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  </div>
+  <ul class="mobile-nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="staff.html">Our Staff</a></li>
+    <li><a href="appointments.html">Appointments</a></li>
+    <li><a href="portal.html">Patient Portal</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="mobile-cta">
+    <a href="appointments.html" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+    <a href="portal.html" class="btn btn-outline">Patient Portal</a>
+  </div>
+</div>
+
+<!-- EMERGENCY BANNER -->
+<div class="emergency-banner">
+  🚨 <strong>Emergency?</strong> Call our 24/7 hotline: <a href="tel:+18005277633">+1-800-LARS-MED</a> &nbsp;|&nbsp; For life-threatening emergencies <a href="tel:911">call 911</a>
+</div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <span><i class="fas fa-phone"></i> +1 (555) 247-8900</span>
+    <span><i class="fas fa-clock"></i> Mon–Fri: 8:00AM – 8:00PM</span>
+    <span><i class="fas fa-map-marker-alt"></i> 142 Wellness Blvd, MedCity, CA 90210</span>
+  </div>
+  <div class="top-bar-right">
+    <a href="portal.html"><i class="fas fa-user"></i> Patient Portal</a>
+    <a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="mainHeader">
+  <nav>
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fas fa-plus"></i></div>
+      <div class="logo-text">
+        <span class="logo-name">Lars Medical Center</span>
+        <span class="logo-tag">Advanced Care. Human Touch.</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="staff.html" class="active">Our Staff</a></li>
+      <li><a href="appointments.html">Appointments</a></li>
+      <li><a href="portal.html">Patient Portal</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="tel:+15552478900" class="btn btn-outline"><i class="fas fa-phone"></i> Call Now</a>
+      <a href="appointments.html" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<!-- PAGE BANNER -->
+<section class="page-banner">
+  <div class="page-banner-shapes"><div class="hero-circle"></div><div class="hero-circle"></div></div>
+  <div class="page-banner-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a> <i class="fas fa-chevron-right" style="font-size:0.65rem;"></i> <span class="current">Our Staff</span></div>
+    <h1>The People Behind <span>Every Department</span></h1>
+    <p>From the physicians at the bedside to the teams keeping our systems, supplies, and finances running — meet the full Lars Medical Center team, department by department.</p>
+  </div>
+</section>
+
+<!-- DEPARTMENT QUICK NAV -->
+<div class="dept-nav">
+  <div class="dept-nav-inner" id="deptNav"></div>
+</div>
+
+<!-- DEPARTMENT SECTIONS render here -->
+<div id="deptSections"></div>
+
+<!-- CTA -->
+<div class="cta-section fade-up">
+  <h2>Want to Join Our Team?</h2>
+  <p>We're always looking for talented, compassionate people across every department.</p>
+  <a href="contact.html" class="btn btn-cta-white"><i class="fas fa-briefcase"></i> View Open Positions</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <a href="index.html" class="logo" style="margin-bottom:16px;display:flex;">
+        <div class="logo-icon"><i class="fas fa-plus"></i></div>
+        <div class="logo-text">
+          <span class="logo-name" style="color:var(--white);">Lars Medical Center</span>
+          <span class="logo-tag">Advanced Care. Human Touch.</span>
+        </div>
+      </a>
+      <p>Providing world-class healthcare with compassion and precision since 1999. Accredited, trusted, and committed to your lifelong wellbeing.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="services.html">Our Services</a></li>
+        <li><a href="staff.html">Our Staff</a></li>
+        <li><a href="appointments.html">Book Appointment</a></li>
+        <li><a href="portal.html">Patient Portal</a></li>
+        <li><a href="news.html">News & Blog</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Our Services</h4>
+      <ul class="footer-links">
+        <li><a href="services.html">Cardiology</a></li>
+        <li><a href="services.html">Neurology</a></li>
+        <li><a href="services.html">Oncology</a></li>
+        <li><a href="services.html">Orthopedics</a></li>
+        <li><a href="services.html">Pediatrics</a></li>
+        <li><a href="services.html">Emergency Medicine</a></li>
+        <li><a href="services.html">Radiology & Imaging</a></li>
+        <li><a href="services.html">Mental Health</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Info</h4>
+      <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>142 Wellness Blvd, MedCity, CA 90210, USA</span></div>
+      <div class="footer-contact-item"><i class="fas fa-phone"></i><span>+1 (555) 247-8900</span></div>
+      <div class="footer-contact-item"><i class="fas fa-ambulance"></i><span style="color:#f87171;">Emergency: +1-800-LARS-MED</span></div>
+      <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>info@larsmédical.com</span></div>
+      <div class="footer-contact-item"><i class="fas fa-clock"></i><span>Mon–Fri: 8AM–8PM<br>Sat–Sun: 9AM–5PM<br>ER: Open 24/7</span></div>
+      <h4 style="margin-top:20px;margin-bottom:10px;">Newsletter</h4>
+      <p style="font-size:0.8rem;margin-bottom:8px;">Get health tips & hospital news.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Your email"/>
+        <button><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Lars Medical Center. All rights reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Sitemap</a>
+      <a href="#">Accessibility</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<a href="https://wa.me/15552478900" class="whatsapp-btn" target="_blank" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<button id="backToTop" title="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner">
+  <p>We use cookies to enhance your experience. By continuing to browse, you agree to our <a href="#">Privacy Policy</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="cookieAccept">Accept All</button>
+    <button class="cookie-decline" id="cookieDecline">Decline</button>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────
+// STAFF DATA — edit this list to add, remove, or update staff.
+// status: "on" (on duty / active) or "off" (off duty / on leave)
+// ─────────────────────────────────────────────────────────
+const departments = [
+  {
+    id: "management", icon: "fa-user-tie", title: "Management Team",
+    desc: "Setting the vision, strategy, and standards that guide every department.",
+    members: [
+      { name:"Dr. Rebecca Lars, MD", role:"Founder & Chief Medical Officer", exp:"28 yrs experience", avatar:"👩‍⚕️", status:"on", bio:"Oversees clinical strategy and quality standards across every department." },
+      { name:"Michael Ondera", role:"Chief Executive Officer", exp:"20 yrs experience", avatar:"👨‍💼", status:"on", bio:"Leads hospital operations, growth strategy, and community partnerships." },
+      { name:"Angela Ferreira, RN", role:"Chief Nursing Officer", exp:"22 yrs experience", avatar:"👩‍💼", status:"on", bio:"Directs nursing standards, staffing, and patient-care quality programs." },
+      { name:"Daniel Osei", role:"Director of Operations", exp:"15 yrs experience", avatar:"🧑‍💼", status:"off", bio:"Manages day-to-day facility operations and cross-department logistics." }
+    ]
+  },
+  {
+    id: "medical", icon: "fa-user-doctor", title: "Medical Department",
+    desc: "Our physicians and specialists delivering diagnosis, treatment, and surgical care.",
+    members: [
+      { name:"Dr. James Whitfield", role:"Cardiologist", exp:"18 yrs experience", avatar:"👨‍⚕️", status:"on", bio:"Specializes in interventional cardiology and minimally invasive procedures." },
+      { name:"Dr. Priya Nandan", role:"Neurologist", exp:"14 yrs experience", avatar:"👩‍⚕️", status:"on", bio:"Focused on stroke care, epilepsy management, and neurodiagnostics." },
+      { name:"Dr. Samuel Achebe", role:"Orthopedic Surgeon", exp:"16 yrs experience", avatar:"👨‍⚕️", status:"on", bio:"Performs joint replacement and sports-injury reconstructive surgery." },
+      { name:"Dr. Lauren Kim", role:"Pediatrician", exp:"11 yrs experience", avatar:"👩‍⚕️", status:"on", bio:"Provides primary and developmental care for infants through adolescents." },
+      { name:"Dr. Thomas Reyes", role:"Oncologist", exp:"19 yrs experience", avatar:"👨‍⚕️", status:"off", bio:"Leads chemotherapy and targeted-therapy treatment planning." },
+      { name:"Dr. Grace Mensah", role:"Emergency Medicine Physician", exp:"9 yrs experience", avatar:"👩‍⚕️", status:"on", bio:"Front-line trauma and acute-care specialist in our 24/7 ER." }
+    ]
+  },
+  {
+    id: "nursing", icon: "fa-user-nurse", title: "Nursing Department",
+    desc: "The team providing hands-on, round-the-clock patient care and comfort.",
+    members: [
+      { name:"Angela Ferreira, RN", role:"Head Nurse / CNO", exp:"22 yrs experience", avatar:"👩‍⚕️", status:"on", bio:"Sets nursing protocols and mentors clinical staff hospital-wide." },
+      { name:"Marcus Bell, RN", role:"ICU Nurse Supervisor", exp:"13 yrs experience", avatar:"👨‍⚕️", status:"on", bio:"Oversees critical-care nursing and life-support monitoring." },
+      { name:"Fiona Adeyemi, RN", role:"Emergency Room Nurse", exp:"8 yrs experience", avatar:"👩‍⚕️", status:"on", bio:"Triages and stabilizes patients during high-acuity ER shifts." },
+      { name:"Tunde Bakare, RN", role:"Pediatric Nurse", exp:"7 yrs experience", avatar:"🧑‍⚕️", status:"off", bio:"Delivers gentle, family-centered care in the pediatrics ward." }
+    ]
+  },
+  {
+    id: "pharmacy", icon: "fa-prescription-bottle-medical", title: "Pharmacy Department",
+    desc: "Ensuring safe, accurate medication dispensing and clinical drug guidance.",
+    members: [
+      { name:"Dr. Nadia Farouk, PharmD", role:"Chief Pharmacist", exp:"17 yrs experience", avatar:"👩‍⚕️", status:"on", bio:"Manages pharmacy operations, safety audits, and drug formularies." },
+      { name:"Kevin Osaze, PharmD", role:"Clinical Pharmacist", exp:"9 yrs experience", avatar:"👨‍⚕️", status:"on", bio:"Reviews prescriptions and advises care teams on medication therapy." },
+      { name:"Ruth Owusu", role:"Pharmacy Technician", exp:"5 yrs experience", avatar:"🧑‍⚕️", status:"off", bio:"Prepares and dispenses medications with precision and care." }
+    ]
+  },
+  {
+    id: "laboratory", icon: "fa-microscope", title: "Laboratory Department",
+    desc: "Delivering fast, accurate diagnostics that guide every treatment decision.",
+    members: [
+      { name:"Dr. Victor Chen", role:"Laboratory Director", exp:"20 yrs experience", avatar:"👨‍🔬", status:"on", bio:"Oversees lab quality control and diagnostic accreditation standards." },
+      { name:"Dr. Amaka Nwosu", role:"Pathologist", exp:"15 yrs experience", avatar:"👩‍🔬", status:"on", bio:"Analyzes tissue and blood samples to diagnose disease at the cellular level." },
+      { name:"Ben Okonkwo", role:"Lab Technician", exp:"6 yrs experience", avatar:"🧑‍🔬", status:"off", bio:"Runs diagnostic testing and maintains lab equipment calibration." }
+    ]
+  },
+  {
+    id: "accounts", icon: "fa-file-invoice-dollar", title: "Accounts Department",
+    desc: "Managing billing, insurance claims, and the hospital's financial health.",
+    members: [
+      { name:"Patricia Nyong", role:"Finance Director", exp:"16 yrs experience", avatar:"👩‍💼", status:"off", bio:"Oversees budgeting, financial reporting, and insurance partnerships." },
+      { name:"George Antwi", role:"Billing & Accounts Specialist", exp:"8 yrs experience", avatar:"👨‍💼", status:"off", bio:"Handles patient billing, claims processing, and payment plans." }
+    ]
+  },
+  {
+    id: "it", icon: "fa-laptop-code", title: "Information Technology (IT)", 
+    desc: "Keeping our digital systems, records, and infrastructure secure and running.",
+    members: [
+      { name:"Samuel Iyer", role:"IT Director", exp:"14 yrs experience", avatar:"🧑‍💻", status:"off", bio:"Leads infrastructure strategy, data security, and systems architecture." },
+      { name:"Chidi Umeh", role:"Systems Administrator", exp:"7 yrs experience", avatar:"👨‍💻", status:"off", bio:"Maintains servers, networks, and electronic health record systems." },
+      { name:"Hana Suzuki", role:"IT Support Specialist", exp:"4 yrs experience", avatar:"👩‍💻", status:"off", bio:"Provides day-to-day technical support across all departments." }
+    ]
+  },
+  {
+    id: "support", icon: "fa-hands-helping", title: "Support Services",
+    desc: "The behind-the-scenes team keeping our facility safe, clean, and welcoming.",
+    members: [
+      { name:"Robert Sarpong", role:"Facilities Manager", exp:"12 yrs experience", avatar:"👨‍🔧", status:"off", bio:"Manages building maintenance, safety systems, and equipment upkeep." },
+      { name:"Linda Owusu-Ansah", role:"Patient Services Coordinator", exp:"6 yrs experience", avatar:"👩‍💼", status:"on", bio:"Guides patients and families through check-in, transport, and inquiries." },
+      { name:"Emmanuel Boateng", role:"Security Officer", exp:"9 yrs experience", avatar:"🧑‍✈️", status:"on", bio:"Maintains a safe environment for patients, staff, and visitors 24/7." }
+    ]
+  }
+];
+
+// ─── RENDER ───
+const navEl = document.getElementById('deptNav');
+const sectionsEl = document.getElementById('deptSections');
+
+departments.forEach((dept, i) => {
+  // nav pill
+  const pill = document.createElement('a');
+  pill.href = '#' + dept.id;
+  pill.className = 'dept-pill';
+  pill.textContent = dept.title;
+  navEl.appendChild(pill);
+
+  // section
+  const section = document.createElement('section');
+  section.className = 'dept-section';
+  section.id = dept.id;
+
+  const cardsHtml = dept.members.map(m => `
+    <div class="staff-card fade-up">
+      <div class="staff-photo">
+        <div class="staff-photo-noise"></div>
+        <div class="staff-glow"></div>
+        <div class="staff-avatar">${m.avatar}</div>
+        <div class="staff-status ${m.status === 'off' ? 'off' : ''}"><span class="dot"></span>${m.status === 'off' ? 'Off Duty' : 'On Duty'}</div>
+        <div class="staff-overlay">
+          <p>${m.bio}</p>
+          <div class="staff-overlay-socials">
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="staff-info">
+        <h3>${m.name}</h3>
+        <div class="role">${m.role}</div>
+        <div class="staff-exp"><i class="fas fa-briefcase"></i> ${m.exp}</div>
+      </div>
+    </div>
+  `).join('');
+
+  section.innerHTML = `
+    <div class="dept-section-inner">
+      <div class="dept-header fade-up">
+        <div class="dept-icon"><i class="fas ${dept.icon}"></i></div>
+        <div class="dept-header-text">
+          <span class="section-tag">Department ${String(i+1).padStart(2,'0')}</span>
+          <h2>${dept.title}</h2>
+          <p>${dept.desc}</p>
+        </div>
+      </div>
+      <div class="staff-grid">${cardsHtml}</div>
+    </div>
+  `;
+  sectionsEl.appendChild(section);
+});
+
+// ── LOADER
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+    setTimeout(() => document.getElementById('cookieBanner').classList.add('visible'), 1200);
+  }, 2000);
+});
+
+// ── MOBILE MENU
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+document.getElementById('mobileClose').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+});
+
+// ── STICKY HEADER
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('mainHeader');
+  header.classList.toggle('scrolled', window.scrollY > 10);
+  const btn = document.getElementById('backToTop');
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// ── BACK TO TOP
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── COOKIE BANNER
+document.getElementById('cookieAccept').addEventListener('click', () => {
+  document.getElementById('cookieBanner').style.transform = 'translateY(100%)';
+});
+document.getElementById('cookieDecline').addEventListener('click', () => {
+  document.getElementById('cookieBanner').style.transform = 'translateY(100%)';
+});
+
+// ── DEPT PILL ACTIVE STATE ON SCROLL
+const pills = document.querySelectorAll('.dept-pill');
+const sectionEls = document.querySelectorAll('.dept-section');
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      pills.forEach(p => p.classList.remove('active'));
+      const match = document.querySelector('.dept-pill[href="#' + entry.target.id + '"]');
+      if (match) match.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sectionEls.forEach(s => navObserver.observe(s));
+
+// ── FADE-UP ANIMATIONS
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), (i % 8) * 60);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
